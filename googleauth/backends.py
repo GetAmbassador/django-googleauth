@@ -1,10 +1,12 @@
 import requests
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User, Group
 
 IS_STAFF = getattr(settings, 'GOOGLEAUTH_IS_STAFF', False)
 GROUPS = getattr(settings, 'GOOGLEAUTH_GROUPS', tuple())
 APPS_DOMAIN = getattr(settings, 'GOOGLEAUTH_APPS_DOMAIN', None)
+AUTH_USER = get_user_model()
 
 
 class GoogleAuthBackend(object):
@@ -21,15 +23,15 @@ class GoogleAuthBackend(object):
 
             try:
 
-                user = User.objects.get(email=email)
+                user = AUTH_USER.objects.get(email=email)
 
-            except User.MultipleObjectsReturned:
+            except AUTH_USER.MultipleObjectsReturned:
 
-                user = User.objects.get(username=username, email=email)
+                user = AUTH_USER.objects.get(username=username, email=email)
 
         except User.DoesNotExist:
 
-            user = User.objects.create(username=username, email=email)
+            user = AUTH_USER.objects.create(username=username, email=email)
             user.first_name = attributes.get('first_name') or ''
             user.last_name = attributes.get('last_name') or ''
             user.is_staff = IS_STAFF
@@ -48,6 +50,6 @@ class GoogleAuthBackend(object):
 
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return AUTH_USER.objects.get(pk=user_id)
+        except AUTH_USER.DoesNotExist:
             pass
