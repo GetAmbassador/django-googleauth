@@ -12,7 +12,7 @@ try:
 except ImportError:
     from django.urls import reverse
 from django.contrib import auth
-from django.contrib.auth.views import logout as django_logout
+from django.contrib.auth.views import LogoutView as django_logout
 from django.http import HttpResponse, HttpResponseRedirect
 
 GOOGLE_AUTH_ENDPOINT = 'https://accounts.google.com/o/oauth2/auth'
