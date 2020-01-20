@@ -7,10 +7,7 @@ except ImportError:
     from urllib.parse import urlencode
 
 from django.conf import settings
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.views import logout as django_logout
 from django.http import HttpResponse, HttpResponseRedirect
